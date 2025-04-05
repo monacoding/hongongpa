@@ -1,0 +1,62 @@
+파이썬은 하나의 변수에 서로 다른 타입의 데이터를 지정할 수 있다. 
+이러한 언어적 특성은 코드를 편리하고 빠르게 작성 할 수 있도록 도와주지만, 
+코드가 복잡해질수록 오류 발생 가능성이 높아진다. 
+이를 위해 데이터 타입을 미리 정하여 변수에 할당하는데 이를
+타입 힌트(type hint) 라고 한다. 
+
+타입 힌트는 변수명 오른쪽에 콜론과 함께 저장할 데이터 타입을 저장하면 된다
+예를 들어 , 
+
+x :int = 123
+y :str = "hello world"
+
+반복문
+    for fullpath in base_dir.glob(pattern): # "*"패턴에 맞는 모든 파일을 찾는다.
+        if fullpath.is_file():
+            total_bytes += fullpath.stat().st_size
+        return total_bytes
+
+반복문이란
+for 요소 in 어떤묶음 :
+반복해서 할일 
+
+for 문은 어떤 것들이 여러개 있을 때, 하나씩 꺼내면서 반복적으로 같은 일을 할때 쓴다.
+예: 여러개의 사과가 담긴 바구니에서 사과를 하나씩 꺼내 먹는 느낌 
+for fullpath in base_dir.glob(pattern):
+여기서 반복문의 역할을
+base_dir.glob(pattern) 는 base_dir(폴더) 안에서 "*" 패턴에 맞는 모든 파일과 폴더를 찾는 코드.
+"*"는 "모든것"이라는 뜻임 
+glob는 찾은 결과 하나하나 fullpath 라는 이름으로 꺼내 줌 
+
+정리 하면 base_dir 폴더 안에 있는 파일과 폴더를 하나씩 꺼내서 fullpath로 받은 다음 아래 일을 반복 하는 거임
+
+fullpath로 보내주고,
+fullpath.is_file () 폴더랑 파일을 같이 받았으니까  파일인지 확인하고 
+fullpath.stat().st_size 파일의 크기를
+total_bytes 로 반환하라
+그걸 return total_bytes 반환 하라 
+
+retun 은 언제 쓰는 것인가 
+
+함수를 만들 때는 결과를 돌려 주기 위해 return 을 써     
+ 
+ 예를 들어 
+
+ def add(a,b) :
+ return a+b
+ 은 단순히 a+b 계산하고 끝나는게 아니라 그 결과 값을 반환해
+ result =add(2,3)
+ print(result) ==>5가 출력 됨 
+
+ 함수는 return 이 없으면 반환 하는 기능이 없음
+ return 은 실행을 끝내는 역할을 하기도 함
+
+ def check_even (n):
+    if n% 2 == 0 ; 
+        return True
+    return False 
+
+이말은, n이 짝수면 --> True 를 반환하고 종료
+아니면 False 를 반환하고 종료 
+
+즉, return 이 실행 되면 그 즉시 함수는 종료 된다. 

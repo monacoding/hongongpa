@@ -1,0 +1,258 @@
+이번 프로젝트인 "폴더 크기 측정 프로그램"에서는 pathlib 패키지를 사용해 간편하고 직관적인 방식으로 폴더와 파일을 관리한다. 
+한편 JSON(java script object notation)은 일정한 형식에 따라 사람이 이해 할 수 있는 기호로 작성된 데이터 포맷으로, 
+웹 어플리케이션을 비롯한 각종 응용 프로그램에서 널리 사용 됩니다.
+
+pathlib 과 json 은 모두 파이썬의 표준 라이브러리에 포함되어 있어, 별도 설치 없이 사용할 수 있다.
+
+<작업 폴더 생성하기>
+
+1. 모듈이란?
+
+모듈은 쉽게 말해 소스 코드 파일이다. import 명령어를 사용 하면 다른 모듈에 작성된 데이터, 변수, 함수, 클래스 등을 불러와서 활용할수 있다.
+모듈은 파이썬 코드가 들어 있는 .py 파일 하나를 뜻한다
+
+예를 들어 
+
+#hello.py   
+def say_hello():
+    print("hello")
+
+라고 한다면, 상기 모듈은 다른 파일에서 사용할 수 있다.
+#main.py
+import hello 
+
+hello.say_hello() ==> 출력
+==> 모듈은 다른 파일에서 재 사용 할 수 있는 코드 묶음이다. 
+
+여러개의 모듈을 기능이나 성격으로 분류 하여 하나의 폴더에 저장한 것을 패키지라고 한다. 
+즉, 
+
+2. 패키지란?
+패키지 = 모듈 1+ 모듈 2+ ....
+즉, 패키지란 여러 모듈을 폴더에 모아 놓은 것이다. 
+
+my_package/
+ -__init__.py
+ -module.py
+ -module1.py
+
+ 이렇게 되어 있으면, 사용 할 때는 
+ from my_package import module1
+ module1.some_fuction()
+
+ 3. __file__과 __name__ 설명 
+ 
+ 3-1. __file__ 
+ : 해당 파일의 경로를 나타냄
+
+ print(__file__) : 결로가 나타남 
+
+ __name__ : 이 파일이 직접 실행된 파일 인지 , 다른 파일에서 import 된 파일인지 알려줌
+ 즉, 
+ 직접 실행 (python text.py) ==> __name__ 값 :"__main__"
+다른 파일에서 import ehls                    :'text(파일명)"
+
+따라서, if__name__ == "__main__"의 의미는 
+
+def my_fuction () :
+print("doing something...")
+if __name__ == "__main__":
+my_fuction() # 직접 실행된 경우에만 실행 됨 
+
+즉 이 코드는 다른곳에서 import 될 때는 실행 되지 않고, 직접 실행 할 만 실행 되게 하는거야 
+
+상기 코드는 굉장이 중요한데, 파이썬 파일의 진입점을 만드는 핵심 도구 이기 때문임
+
+왜 쓰냐면, 
+ - 직접 실행했을 때만 실행 되게 하려고
+ - import 될 때는 실행 되지 않게 막기 위해서 
+
+ 배경 : 파이썬은 모든 파일을 "모듈 객체"로 다룬다.
+ 예를들어, 두개의 파일이 있다고 해보자
+ #hello.py
+ print("hello 모듈이 실행됨)
+
+ #main.py
+ import hello
+ print("main.py 실행 완료)
+
+ main.py 를 실행 하면
+
+ $ python main.py
+ hello 모듈이 샐행됨
+ main.py 실행 완료
+
+ 이유는? import 하자마자 hello.py 안의 코드가 그대로 실행되기 때문이야.
+
+ 이때 우리는 "hello 모듈안에는 재사용 하고 싶은 함수들만 있고, print는 실행 안되게 하고 싶은데?
+
+ 이거 해결해주는게 바로 
+
+ if __name__ == "__main__" 이다.
+
+ #hello.py
+ def say_hello():
+ print("Hello")
+
+ print("이건 무조건 실행됨")
+
+ if __name__ == "__main__":
+    print("이건 직접 실행 될 때만 실행 됨")
+
+이렇게 했을때 실행 하면 
+
+$python hello.py
+이건 무조건 실행됨
+이건 직접 실행 될 때만 실행 됨
+
+하지만 다른 파일에서 import 하면?
+#main.py
+import hello
+
+이건 무조건 실행됨
+
+즉, "__name__" == '__main__' 조건이 False 이기 떄문에 저 "이건 직접 실행 될 때만 실행됨" 구문이 실행 되지 않는 것임 
+
+# math_utils.py
+def add(a, b):
+    return a + b
+
+def sub(a, b):
+    return a - b
+
+# 테스트용 코드
+if __name__ == "__main__":
+    print(add(2, 3))  # 5
+    print(sub(5, 2))  # 3
+
+# main.py
+def run():
+    print("프로그램 실행!")
+
+if __name__ == "__main__":
+    run()
+
+이렇게 하면 이 파일이 실행될 때만 run()이 실행되고,
+다른 파일에서 import main 했을 때는 자동으로 실행되지 않아.
+
+파이썬은 모듈을 실행하기 위해 파일로 저장된 모듈을 메모리로 불러와서 모듈 객체를 생성한다. 
+이때 __file__속성에는 모듈의 절대 경로가, __name__에는 확장자를 제외한 파일명이 저장된다. 
+
+한편, 프로그램 실행 시 최초로 실행 되는 사용자 작성 모듈을 최상위 코드라고 한다. 
+모듈 객체가 최상위 코드로 실행되는 경우 __name__ 속성에 문자열 '__main__'이 저장된다.
+
+예를들어  본 파일은 /Users/gimtaehyeong/Desktop/공부/코딩/1.python/1. 혼공파/ch_1/text.txt 에 저장되어 있는데, 
+__file__ : 현재 파일의 절대 경로, /Users/gimtaehyeong/Desktop/공부/코딩/1.python/1. 혼공파/ch_1/text.txt
+__name__ : 확장자를 제외한 현재 파일명, text
+
+즉 무슨 말이냐면, 파이썬은 결국 모든 파일을 "모듈"로 활용한다 이게 정말 핵심이다.
+파이썬에선 모든 .py 파일 하나하나가 "모듈 객체"가 되고 언제 든지 import 로 가져와서 사용 할수 있어
+
+즉, 
+
+모든.py 파일 --> 실행 되든 import 되든 파이썬 입장에서는 "모듈" 로 간주한다.
+
+그래서, 어떤 파일이 직접 실행되는 상황인지, 
+아니면 import 되어 실행 되는 상황인지 구분하는 수단이 바로, 
+
+if __name__(파일 명이) == "__main__" (직접 실행 한거라면)
+
+예를들어 파이썬 a.py 파일이 있다고 해보자.
+
+파이썬은 무조건 모듈 a.py 로 인식해
+
+만약 직접실행되면, 
+
+__name__ == '__main__' 이고 ==>main 코드 실행
+
+import 되면,
+__name__ =='a' ==> main 코드 생략
+
+그렇다면 왜 직접 실행 하면 __name__ ='__main__' 이 되는 걸까?
+
+이건 파이썬 인터프리터가 파일을 실행 하는 방식과 관련이 있어
+
+파이썬은 어떤 .py 파일을 실행 하면, 
+그 파일을 __main__ 이라는 이름의 모듈로 인식해서 실행해 
+
+즉 : 직접 실행된 파일은 __name__ 이라는 변수에 __main__ 을 자동으로 설정한다
+
+라고 했어 왜냐면, 
+
+파이썬 개발자들은 이런걸 고민했어
+- 어떤 파일은 직접 실행에서 테스트도 하고, 
+- 어떤 파일은 다른 파일에서 import 로 재사용 하고 싶을때
+
+그래서 바로 구분을 지은게 
+
+직접 실행 할때는 __name__ =='__main__'
+import 될 때는 __name__== '모듈 이름'
+
+하도록한거야 
+
+자 그렇다면, import 의 근본적인 동작 원리를 좀 더 파고 들어가보자 
+
+파이썬이 모듈을 import 할 때 내부적으로 어떤 과정을 거치는지, 실제로
+메모리에서는 어떤일이 벌어 지는지 보자
+
+import hello
+
+이렇게 hello 라는 모듈을 import 할때 컴퓨터 내부적으로는
+
+1. sys.modules 캐시에 이미 hello 가 있는가?
+-> 있으면 : 재사용 하고 끝
+-> 없으면 ;
+  1. hello 모듈을 찾음 (sys.path 기반 경로 탐색)
+  2. 모듈의 .py 파일을 읽고 -> 컴파일 -> 모듈 객체 생성
+  3. sys.modules 에 등록
+  4. 현재 스콥에 hello 바인딩
+
+단계별로 보자
+1. sys.modules 캐시 확인
+ 파이썬은 모듈을 한번만 로딩함. 이미 불러온 모듈은 다시 읽지 않고 캐시 된 것을 씀
+ import sys
+ print(sys.modeles['sys'])
+
+ sys.modeles 는 이미 import 된 모든 모듈의 딕셔너리임
+
+ 2. 모듈을 어디서 찾을 까? sys.path 사용
+ import sys
+ print(sys.path)
+ ===> 순서대로 .py 파일, .pyc 파일등을 찾는다.
+
+ 3. 모듈 파일 로딩 및 컴파일
+ .py 파일 ==> 읽어서 ==> 바이트 코드 (.pyc) 로 컴파일
+ compile() 함수로 AST --> 바이트 코드로 변환
+ 최종적으로 module 객체 생성
+
+ 4. sys.modeles 에 등록
+
+ 5. 현재 네임 스페이스에 바인딩 
+ # hello.py
+def say_hi():
+    print("hi")
+
+# main.py
+import hello
+hello.say_hi()
+
+          main.py
+             │
+     ┌───────┴────────┐
+     ▼                ▼
+import hello      import world
+     │
+     ▼
+[Check sys.modules]
+     │
+     ▼
+[Not found? → Load from sys.path]
+     │
+     ▼
+[Parse & Compile hello.py]
+     │
+     ▼
+[Create Module Object → sys.modules["hello"] 등록]
+     │
+     ▼
+[현재 네임스페이스에 hello = <module 'hello'> 바인딩]
